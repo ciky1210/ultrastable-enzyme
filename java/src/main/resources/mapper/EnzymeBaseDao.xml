@@ -1,0 +1,297 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hnlg.enzyme.dao.EnzymeBaseDao">
+  <resultMap id="BaseResultMap" type="com.hnlg.enzyme.entity.po.EnzymeBasePO">
+    <id column="id" jdbcType="BIGINT" property="id" />
+    <result column="enzyme_name" jdbcType="VARCHAR" property="enzymeName" />
+    <result column="enzyme_ec_code" jdbcType="VARCHAR" property="enzymeEcCode" />
+    <result column="enzyme_classification" jdbcType="VARCHAR" property="enzymeClassification" />
+    <result column="enzyme_type" jdbcType="VARCHAR" property="enzymeType" />
+    <result column="enzyme_species" jdbcType="VARCHAR" property="enzymeSpecies" />
+    <result column="enzyme_mutation_type" jdbcType="VARCHAR" property="enzymeMutationType" />
+    <result column="enzyme_mutant" jdbcType="VARCHAR" property="enzymeMutant" />
+  </resultMap>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from enzyme_base
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" keyColumn="id" keyProperty="id" parameterType="com.hnlg.enzyme.entity.po.EnzymeBasePO" useGeneratedKeys="true">
+    insert into enzyme_base (enzyme_name, enzyme_ec_code, enzyme_classification, 
+      enzyme_type, enzyme_species, enzyme_mutation_type, 
+      enzyme_mutant)
+    values (#{enzymeName,jdbcType=VARCHAR}, #{enzymeEcCode,jdbcType=VARCHAR}, #{enzymeClassification,jdbcType=VARCHAR}, 
+      #{enzymeType,jdbcType=VARCHAR}, #{enzymeSpecies,jdbcType=VARCHAR}, #{enzymeMutationType,jdbcType=VARCHAR}, 
+      #{enzymeMutant,jdbcType=VARCHAR})
+  </insert>
+  <update id="updateByPrimaryKey" parameterType="com.hnlg.enzyme.entity.po.EnzymeBasePO">
+    update enzyme_base
+    set enzyme_name = #{enzymeName,jdbcType=VARCHAR},
+      enzyme_ec_code = #{enzymeEcCode,jdbcType=VARCHAR},
+      enzyme_classification = #{enzymeClassification,jdbcType=VARCHAR},
+      enzyme_type = #{enzymeType,jdbcType=VARCHAR},
+      enzyme_species = #{enzymeSpecies,jdbcType=VARCHAR},
+      enzyme_mutation_type = #{enzymeMutationType,jdbcType=VARCHAR},
+      enzyme_mutant = #{enzymeMutant,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <update id="batchUpdate" parameterType="com.hnlg.enzyme.entity.po.EnzymeBasePO">
+    <foreach collection="list" item="item" index="index" open="" close="" separator=";">
+     update enzyme_base
+     <set>
+       <if test="item.enzymeName != null">
+         enzyme_name = #{item.enzymeName,jdbcType=VARCHAR},
+       </if>
+       <if test="item.enzymeEcCode != null">
+         enzyme_ec_code = #{item.enzymeEcCode,jdbcType=VARCHAR},
+       </if>
+       <if test="item.enzymeClassification != null">
+         enzyme_classification = #{item.enzymeClassification,jdbcType=VARCHAR},
+       </if>
+       <if test="item.enzymeType != null">
+         enzyme_type = #{item.enzymeType,jdbcType=VARCHAR},
+       </if>
+       <if test="item.enzymeSpecies != null">
+         enzyme_species = #{item.enzymeSpecies,jdbcType=VARCHAR},
+       </if>
+       <if test="item.enzymeMutationType != null">
+         enzyme_mutation_type = #{item.enzymeMutationType,jdbcType=VARCHAR},
+       </if>
+       <if test="item.enzymeMutant != null">
+         enzyme_mutant = #{item.enzymeMutant,jdbcType=VARCHAR}
+       </if>
+     </set>
+    where id = #{item.id,jdbcType=BIGINT}
+    </foreach>
+  </update>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select id, enzyme_name, enzyme_ec_code, enzyme_classification, enzyme_type, enzyme_species, 
+    enzyme_mutation_type, enzyme_mutant
+    from enzyme_base
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+  <select id="selectAll" resultType="com.hnlg.enzyme.entity.dto.EnzymeInfoDTO">
+   select  eb.id,eb.enzyme_name, eb.enzyme_ec_code, eb.enzyme_classification,eb.enzyme_type, eb.enzyme_species,
+      eb.enzyme_mutation_type, eb.enzyme_mutant,ei.id, ei.enzyme_id, ei.enzyme_gi_num, ei.enzyme_kda, ei.enzyme_amino_acid_num, ei.enzyme_mutation_before,
+    ei.enzyme_mutation_after, ei.enzyme_substrate, ei.enzyme_product, ei.enzyme_belong, ei.enzyme_min_ph_scope,
+    ei.enzyme_max_ph_scope, ei.enzyme_perfect_scope, ei.enzyme_min_temperature_scope, ei.enzyme_max_temperature_scope,
+    ei.enzyme_perfect_temperature_scope, ei.enzyme_tolerance, ei.enzyme_vmax_mmo_evaluation, ei.enzyme_km_mmol_evaluation,
+    ei.enzyme_kcat_evaluation, ei.enzyme_kcat_km_evaluation, ei.enzyme_bh_evaluation, ei.enzyme_reference,
+    ei.enzyme_reference_url, ei.enzyme_sequence,ei.enzyme_tm,ei.enzyme_half_life,ei.enzyme_temperature_tolerance,ei.enzyme_acid_alkali_tolerance,
+    ei.enzyme_tolerance_classification,ei.enzyme_overall_evaluation
+    from enzyme_info ei left join enzyme_base eb
+    on eb.id =ei.enzyme_id ORDER BY eb.enzyme_ec_code,eb.enzyme_name
+  </select>
+    <select id="findEnzymeByDict" resultType="com.hnlg.enzyme.entity.dto.EnzymeInfoDTO">
+      select eb.id,eb.enzyme_name, eb.enzyme_ec_code, eb.enzyme_classification,eb.enzyme_type, eb.enzyme_species,
+        eb.enzyme_mutation_type, eb.enzyme_mutant,ei.id, ei.enzyme_id, ei.enzyme_gi_num, ei.enzyme_kda, ei.enzyme_amino_acid_num, ei.enzyme_mutation_before,
+        ei.enzyme_mutation_after, ei.enzyme_substrate, ei.enzyme_product, ei.enzyme_belong, ei.enzyme_min_ph_scope,
+        ei.enzyme_max_ph_scope, ei.enzyme_perfect_scope, ei.enzyme_min_temperature_scope, ei.enzyme_max_temperature_scope,
+        ei.enzyme_perfect_temperature_scope, ei.enzyme_tolerance, ei.enzyme_vmax_mmo_evaluation, ei.enzyme_km_mmol_evaluation,
+        ei.enzyme_kcat_evaluation, ei.enzyme_kcat_km_evaluation, ei.enzyme_bh_evaluation, ei.enzyme_reference,
+        ei.enzyme_reference_url, ei.enzyme_sequence,ei.enzyme_tm,ei.enzyme_half_life,ei.enzyme_temperature_tolerance,ei.enzyme_acid_alkali_tolerance,
+        ei.enzyme_tolerance_classification,ei.enzyme_overall_evaluation
+      from enzyme_base eb
+      left join enzyme_info ei
+      on eb.id = ei.enzyme_id
+      <where>
+        <if test="type !=null and type == 'ECBH'.toString()">
+            and eb.enzyme_ec_code like CONCAT ('%',#{keyword},'%')
+       </if>
+        <if test="type !=null and type=='FL'.toString()">
+            and eb.enzyme_classification like CONCAT ('%',#{keyword},'%')
+        </if>
+      <if test="type!=null and type=='LX'.toString()">
+          and eb.enzyme_type like CONCAT ('%',#{keyword},'%')
+      </if>
+      <if test="type!=null and type=='WD'.toString()">
+          and ei.enzyme_temperature_tolerance like CONCAT ('%',#{keyword},'%')
+      </if>
+      <if test="type!=null and type=='SJ'.toString()">
+          and ei.enzyme_acid_alkali_tolerance like CONCAT ('%',#{keyword},'%')
+      </if>
+      <if test="type!=null and type=='NSFL'.toString()">
+          and ei.enzyme_tolerance_classification like CONCAT ('%',#{keyword},'%')
+      </if>
+      <if test="keyword!=null and type != 'LX'.toString() and type != 'ECBH'.toString()
+       and type != 'FL'.toString() and type != 'WD'.toString() and type != 'SJ'.toString() and type != 'NSFL'.toString()">
+        and  ((eb.enzyme_ec_code like CONCAT ('%',#{keyword},'%'))
+              OR (eb.enzyme_name like CONCAT ('%',#{keyword},'%'))
+              OR (eb.enzyme_type like CONCAT ('%',#{keyword},'%'))
+              OR (eb.enzyme_species like CONCAT ('%',#{keyword},'%'))
+              OR (ei.enzyme_substrate like CONCAT ('%',#{keyword},'%'))
+              OR (ei.enzyme_product like CONCAT ('%',#{keyword},'%'))
+              OR (ei.enzyme_belong like CONCAT ('%',#{keyword},'%'))
+              OR (ei.enzyme_tolerance like CONCAT ('%',#{keyword},'%'))
+              OR (ei.enzyme_temperature_tolerance like CONCAT ('%',#{keyword},'%'))
+              OR (ei.enzyme_acid_alkali_tolerance like CONCAT ('%',#{keyword},'%'))
+              OR (ei.enzyme_tolerance_classification like CONCAT ('%',#{keyword},'%'))
+              )
+      </if>
+      </where>
+      ORDER BY eb.enzyme_name
+    </select>
+    <select id="getEnzymeNum" resultType="java.lang.Integer">
+      select count(id) from enzyme_base
+    </select>
+
+  <select id="findEnzymeByIdList"  resultType="com.hnlg.enzyme.entity.dto.EnzymeInfoDTO">
+    select  eb.id,eb.enzyme_name, eb.enzyme_ec_code, eb.enzyme_classification,eb.enzyme_type, eb.enzyme_species,
+      eb.enzyme_mutation_type, eb.enzyme_mutant,ei.id, ei.enzyme_id, ei.enzyme_gi_num, ei.enzyme_kda, ei.enzyme_amino_acid_num, ei.enzyme_mutation_before,
+    ei.enzyme_mutation_after, ei.enzyme_substrate, ei.enzyme_product, ei.enzyme_belong, ei.enzyme_min_ph_scope,
+    ei.enzyme_max_ph_scope, ei.enzyme_perfect_scope, ei.enzyme_min_temperature_scope, ei.enzyme_max_temperature_scope,
+    ei.enzyme_perfect_temperature_scope, ei.enzyme_tolerance, ei.enzyme_vmax_mmo_evaluation, ei.enzyme_km_mmol_evaluation,
+    ei.enzyme_kcat_evaluation, ei.enzyme_kcat_km_evaluation, ei.enzyme_bh_evaluation, ei.enzyme_reference,
+    ei.enzyme_reference_url, ei.enzyme_sequence,ei.enzyme_tm,ei.enzyme_half_life,ei.enzyme_temperature_tolerance,ei.enzyme_acid_alkali_tolerance,
+    ei.enzyme_tolerance_classification,ei.enzyme_overall_evaluation
+    from enzyme_info ei left join enzyme_base eb
+    on eb.id =ei.enzyme_id
+    where ei.enzyme_id in
+    <foreach collection="array" open="(" separator="," close=")" item="split">
+      #{split}
+    </foreach>
+  </select>
+
+  <select id="complexFindToEnzyme" resultType="com.hnlg.enzyme.entity.dto.EnzymeInfoDTO">
+    select  eb.id,eb.enzyme_name, eb.enzyme_ec_code, eb.enzyme_classification,eb.enzyme_type, eb.enzyme_species,
+    eb.enzyme_mutation_type, eb.enzyme_mutant,ei.id, ei.enzyme_id, ei.enzyme_gi_num, ei.enzyme_kda, ei.enzyme_amino_acid_num, ei.enzyme_mutation_before,
+    ei.enzyme_mutation_after, ei.enzyme_substrate, ei.enzyme_product, ei.enzyme_belong, ei.enzyme_min_ph_scope,
+    ei.enzyme_max_ph_scope, ei.enzyme_perfect_scope, ei.enzyme_min_temperature_scope, ei.enzyme_max_temperature_scope,
+    ei.enzyme_perfect_temperature_scope, ei.enzyme_tolerance, ei.enzyme_vmax_mmo_evaluation, ei.enzyme_km_mmol_evaluation,
+    ei.enzyme_kcat_evaluation, ei.enzyme_kcat_km_evaluation, ei.enzyme_bh_evaluation, ei.enzyme_reference,
+    ei.enzyme_reference_url, ei.enzyme_sequence,ei.enzyme_tm,ei.enzyme_half_life,ei.enzyme_temperature_tolerance,ei.enzyme_acid_alkali_tolerance,
+    ei.enzyme_tolerance_classification,ei.enzyme_overall_evaluation
+    from enzyme_info ei left join enzyme_base eb
+    on eb.id =ei.enzyme_id
+    <where>
+      <if test="typeOne !=null and typeOne == 'FL'.toString()">
+        and (eb.enzyme_classification like CONCAT ('%',#{enzymeClassification},'%'))
+      </if>
+      <if test="typeOne !=null and typeOne == 'LX'.toString()">
+        and (eb.enzyme_type like CONCAT ('%',#{enzymeType},'%'))
+      </if>
+      <if test="typeOne !=null and typeOne=='MC'.toString()">
+        and (eb.enzyme_name like CONCAT ('%',#{enzymeName},'%'))
+      </if>
+      <if test="typeOne!=null and typeOne=='WZ'.toString()">
+        and (eb.enzyme_species like CONCAT ('%',#{enzymeSpecies},'%'))
+      </if>
+      <if test="typeOne!=null and typeOne=='FYGC'.toString()">
+        and (ei.enzyme_substrate like CONCAT ('%',#{enzymeSubstrate},'%') OR
+        ei.enzyme_product like CONCAT ('%',#{enzymeSubstrate},'%') OR
+        ei.enzyme_belong like CONCAT ('%',#{enzymeSubstrate},'%'))
+      </if>
+      <if test="typeOne!=null and typeOne=='FYTJ'.toString()">
+        and (ei.enzyme_min_ph_scope like CONCAT ('%',#{enzymeMinPhScope},'%') OR
+        ei.enzyme_max_ph_scope like CONCAT ('%',#{enzymeMinPhScope},'%') OR
+        ei.enzyme_perfect_scope like CONCAT ('%',#{enzymeMinPhScope},'%') OR
+        ei.enzyme_min_temperature_scope like CONCAT ('%',#{enzymeMinPhScope},'%') OR
+        ei.enzyme_max_temperature_scope like CONCAT ('%',#{enzymeMinPhScope},'%') OR
+        ei.enzyme_perfect_temperature_scope like CONCAT ('%',#{enzymeMinPhScope},'%'))
+      </if>
+      <if test="typeOne!=null and typeOne=='NSX'.toString()">
+        and (ei.enzyme_tolerance like CONCAT ('%',#{enzymeTolerance},'%'))
+      </if>
+      <if test="condition!=null and condition=='AND'.toString()">
+        and
+        <if test="typeTwo !=null and typeTwo == 'FL'.toString()">
+           (eb.enzyme_classification like CONCAT ('%',#{enzymeClassification},'%'))
+        </if>
+        <if test="typeTwo !=null and typeTwo == 'LX'.toString()">
+           (eb.enzyme_type like CONCAT ('%',#{enzymeType},'%'))
+        </if>
+        <if test="typeTwo !=null and typeTwo=='MC'.toString()">
+           (eb.enzyme_name like CONCAT ('%',#{enzymeName},'%'))
+        </if>
+        <if test="typeTwo!=null and typeTwo=='WZ'.toString()">
+           (eb.enzyme_species like CONCAT ('%',#{enzymeSpecies},'%'))
+        </if>
+        <if test="typeTwo!=null and typeTwo=='FYGC'.toString()">
+           (ei.enzyme_substrate like CONCAT ('%',#{enzymeSubstrate},'%') OR
+          ei.enzyme_product like CONCAT ('%',#{enzymeSubstrate},'%') OR
+          ei.enzyme_belong like CONCAT ('%',#{enzymeSubstrate},'%'))
+        </if>
+        <if test="typeTwo!=null and typeTwo=='FYTJ'.toString()">
+           (ei.enzyme_min_ph_scope like CONCAT ('%',#{enzymeMinPhScope},'%') OR
+          ei.enzyme_max_ph_scope like CONCAT ('%',#{enzymeMinPhScope},'%') OR
+          ei.enzyme_perfect_scope like CONCAT ('%',#{enzymeMinPhScope},'%') OR
+          ei.enzyme_min_temperature_scope like CONCAT ('%',#{enzymeMinPhScope},'%') OR
+          ei.enzyme_max_temperature_scope like CONCAT ('%',#{enzymeMinPhScope},'%') OR
+          ei.enzyme_perfect_temperature_scope like CONCAT ('%',#{enzymeMinPhScope},'%'))
+        </if>
+        <if test="typeTwo!=null and typeTwo=='NSX'.toString()">
+           (ei.enzyme_tolerance like CONCAT ('%',#{enzymeTolerance},'%'))
+        </if>
+      </if>
+      <if test="condition!=null and condition=='OR'.toString()">
+        OR
+        <if test="typeTwo !=null and typeTwo == 'FL'.toString()">
+           (eb.enzyme_classification like CONCAT ('%',#{enzymeClassification},'%'))
+        </if>
+        <if test="typeTwo !=null and typeTwo == 'LX'.toString()">
+           (eb.enzyme_type like CONCAT ('%',#{enzymeType},'%'))
+        </if>
+        <if test="typeTwo !=null and typeTwo=='MC'.toString()">
+           (eb.enzyme_name like CONCAT ('%',#{enzymeName},'%'))
+        </if>
+        <if test="typeTwo!=null and typeTwo=='WZ'.toString()">
+           (eb.enzyme_species like CONCAT ('%',#{enzymeSpecies},'%'))
+        </if>
+        <if test="typeTwo!=null and typeTwo=='FYGC'.toString()">
+           (ei.enzyme_substrate like CONCAT ('%',#{enzymeSubstrate},'%') OR
+          ei.enzyme_product like CONCAT ('%',#{enzymeSubstrate},'%') OR
+          ei.enzyme_belong like CONCAT ('%',#{enzymeSubstrate},'%'))
+        </if>
+        <if test="typeTwo!=null and typeTwo=='FYTJ'.toString()">
+           (ei.enzyme_min_ph_scope like CONCAT ('%',#{enzymeMinPhScope},'%') OR
+          ei.enzyme_max_ph_scope like CONCAT ('%',#{enzymeMinPhScope},'%') OR
+          ei.enzyme_perfect_scope like CONCAT ('%',#{enzymeMinPhScope},'%') OR
+          ei.enzyme_min_temperature_scope like CONCAT ('%',#{enzymeMinPhScope},'%') OR
+          ei.enzyme_max_temperature_scope like CONCAT ('%',#{enzymeMinPhScope},'%') OR
+          ei.enzyme_perfect_temperature_scope like CONCAT ('%',#{enzymeMinPhScope},'%'))
+        </if>
+        <if test="typeTwo!=null and typeTwo=='NSX'.toString()">
+           (ei.enzyme_tolerance like CONCAT ('%',#{enzymeTolerance},'%'))
+        </if>
+      </if>
+      <if test="condition!=null and condition=='NOR'.toString()">
+        and
+        <if test="typeTwo !=null and typeTwo == 'FL'.toString()">
+           (eb.enzyme_classification not like CONCAT ('%',#{enzymeClassification},'%'))
+        </if>
+        <if test="typeTwo !=null and typeTwo == 'LX'.toString()">
+           (eb.enzyme_type not like CONCAT ('%',#{enzymeType},'%'))
+        </if>
+        <if test="typeTwo !=null and typeTwo=='MC'.toString()">
+           (eb.enzyme_name not like CONCAT ('%',#{enzymeName},'%'))
+        </if>
+        <if test="typeTwo!=null and typeTwo=='WZ'.toString()">
+           (eb.enzyme_species not like CONCAT ('%',#{enzymeSpecies},'%'))
+        </if>
+        <if test="typeTwo!=null and typeTwo=='FYGC'.toString()">
+           (ei.enzyme_substrate not like CONCAT ('%',#{enzymeSubstrate},'%') OR
+          ei.enzyme_product not like CONCAT ('%',#{enzymeSubstrate},'%') OR
+          ei.enzyme_belong not like CONCAT ('%',#{enzymeSubstrate},'%'))
+        </if>
+        <if test="typeTwo!=null and typeTwo=='FYTJ'.toString()">
+           (ei.enzyme_min_ph_scope not like CONCAT ('%',#{enzymeMinPhScope},'%') OR
+          ei.enzyme_max_ph_scope not like CONCAT ('%',#{enzymeMinPhScope},'%') OR
+          ei.enzyme_perfect_scope not like CONCAT ('%',#{enzymeMinPhScope},'%') OR
+          ei.enzyme_min_temperature_scope not like CONCAT ('%',#{enzymeMinPhScope},'%') OR
+          ei.enzyme_max_temperature_scope not like CONCAT ('%',#{enzymeMinPhScope},'%') OR
+          ei.enzyme_perfect_temperature_scope not like CONCAT ('%',#{enzymeMinPhScope},'%'))
+        </if>
+        <if test="typeTwo!=null and typeTwo=='NSX'.toString()">
+           (ei.enzyme_tolerance not like CONCAT ('%',#{enzymeTolerance},'%'))
+        </if>
+      </if>
+
+    </where>
+    ORDER BY eb.enzyme_name
+  </select>
+  <select id="countEnzymeTypeData" resultType="java.lang.Integer">
+      select COUNT(result.enzyme_type)  from  (select enzyme_type  from enzyme_base  group by enzyme_type ) as result
+   </select>
+  <select id="countEnzymeSpeciesData" resultType="java.lang.Integer">
+      select COUNT(result.enzyme_species)  from  (select enzyme_species  from enzyme_base  group by enzyme_species ) as result
+   </select>
+</mapper>

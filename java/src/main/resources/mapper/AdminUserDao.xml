@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hnlg.enzyme.dao.AdminUserDao">
+  <resultMap id="BaseResultMap" type="com.hnlg.enzyme.entity.po.AdminUserPO">
+    <id column="id" jdbcType="BIGINT" property="id" />
+    <result column="user_name" jdbcType="VARCHAR" property="userName" />
+    <result column="password" jdbcType="VARCHAR" property="password" />
+    <result column="nick_name" jdbcType="VARCHAR" property="nickName" />
+    <result column="is_admin" property="adminFlag" />
+    <result column="is_lock"  property="lockFlag" />
+  </resultMap>
+  <sql id="baseSelect">
+     id, user_name, password, nick_name,is_admin,is_lock
+  </sql>
+
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from admin_user
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" keyColumn="id" keyProperty="id" parameterType="com.hnlg.enzyme.entity.po.AdminUserPO" useGeneratedKeys="true">
+    insert into admin_user (user_name, password, nick_name,is_lock,is_admin
+      )
+    values (#{userName,jdbcType=VARCHAR}, #{password,jdbcType=VARCHAR}, #{nickName,jdbcType=VARCHAR},#{lockFlag},#{adminFlag}
+      )
+  </insert>
+  <update id="updateByPrimaryKey" parameterType="com.hnlg.enzyme.entity.po.AdminUserPO">
+    update admin_user
+    <set>
+      <if test="userName != null">
+        user_name = #{userName,jdbcType=VARCHAR},
+      </if>
+      <if test="password != null">
+        password = #{password,jdbcType=VARCHAR},
+      </if>
+      <if test="nickName != null">
+        nick_name = #{nickName,jdbcType=VARCHAR},
+      </if>
+      <if test="lockFlag != null">
+        is_lock = #{lockFlag,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select <include refid="baseSelect"/>
+    from admin_user
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+  <select id="selectAll" resultMap="BaseResultMap">
+    select <include refid="baseSelect"/>
+    from admin_user
+  </select>
+  <!--用户登录-->
+  <select id="userLogin" resultMap="BaseResultMap">
+      select <include refid="baseSelect"/>
+       from admin_user
+       where user_name=#{userName} and password = #{password}
+  </select>
+  <!--用户重名检查-->
+  <select id="checkUser" resultMap="BaseResultMap">
+      select <include refid="baseSelect"/>
+       from admin_user
+       where user_name =#{userName};
+  </select>
+
+</mapper>

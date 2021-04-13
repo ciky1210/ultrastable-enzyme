@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hnlg.enzyme.dao.EnzymeDictionaryDao">
+  <resultMap id="BaseResultMap" type="com.hnlg.enzyme.entity.po.EnzymeDictionaryPO">
+    <id column="id" jdbcType="BIGINT" property="id" />
+    <result column="enzyme_dict_name" jdbcType="VARCHAR" property="enzymeDictName" />
+    <result column="enzyme_dict_type" jdbcType="VARCHAR" property="enzymeDictType" />
+    <result column="enzyme_dict_code" jdbcType="VARCHAR" property="enzymeDictCode" />
+  </resultMap>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from enzyme_dictionary
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" keyColumn="id" keyProperty="id" parameterType="com.hnlg.enzyme.entity.po.EnzymeDictionaryPO" useGeneratedKeys="true">
+    insert into enzyme_dictionary (enzyme_dict_name, enzyme_dict_type, enzyme_dict_code
+      )
+    values (#{enzymeDictName,jdbcType=VARCHAR}, #{enzymeDictType,jdbcType=VARCHAR}, #{enzymeDictCode,jdbcType=VARCHAR}
+      )
+  </insert>
+  <update id="updateByPrimaryKey" parameterType="com.hnlg.enzyme.entity.po.EnzymeDictionaryPO">
+    update enzyme_dictionary
+    set enzyme_dict_name = #{enzymeDictName,jdbcType=VARCHAR},
+      enzyme_dict_type = #{enzymeDictType,jdbcType=VARCHAR},
+      enzyme_dict_code = #{enzymeDictCode,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select id, enzyme_dict_name, enzyme_dict_type, enzyme_dict_code
+    from enzyme_dictionary
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+  <select id="selectAll" resultMap="BaseResultMap">
+    select id, enzyme_dict_name, enzyme_dict_type, enzyme_dict_code
+    from enzyme_dictionary ORDER BY enzyme_dict_name
+  </select>
+  <select id="selectByDictName" resultType="int">
+    select count(1)
+    from enzyme_dictionary where enzyme_dict_name=#{enzymeEcCode}
+  </select>
+</mapper>

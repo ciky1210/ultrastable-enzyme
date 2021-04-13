@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hnlg.enzyme.dao.EnzymeLogDao">
+  <resultMap id="BaseResultMap" type="com.hnlg.enzyme.entity.po.EnzymeLogPO">
+    <id column="id" jdbcType="BIGINT" property="id" />
+    <result column="user_id" jdbcType="BIGINT" property="userId" />
+    <result column="user_name" jdbcType="VARCHAR" property="userName" />
+    <result column="operation_type" jdbcType="VARCHAR" property="operationType" />
+    <result column="operation_time" jdbcType="TIMESTAMP" property="operationTime" />
+    <result column="operation_body" jdbcType="VARCHAR" property="operationBody" />
+  </resultMap>
+  <insert id="insert" keyColumn="id" keyProperty="id" parameterType="com.hnlg.enzyme.entity.po.EnzymeLogPO" useGeneratedKeys="true">
+    insert into enzyme_log (user_id,user_name, operation_type, operation_time,
+      operation_body)
+    values (#{userId},#{userName,jdbcType=VARCHAR}, #{operationType,jdbcType=VARCHAR}, #{operationTime,jdbcType=TIMESTAMP},
+      #{operationBody,jdbcType=VARCHAR})
+  </insert>
+  <select id="selectAll" resultMap="BaseResultMap">
+    select id,user_id, user_name, operation_type, operation_time, operation_body
+    from enzyme_log
+  </select>
+    <select id="selectById" resultType="com.hnlg.enzyme.entity.po.EnzymeLogPO">
+      select id, user_id,user_name, operation_type, operation_time, operation_body
+      from enzyme_log where user_id=#{userId} ORDER BY operation_time
+    </select>
+</mapper>

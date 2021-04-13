@@ -1,0 +1,156 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hnlg.enzyme.dao.EnzymeInfoDao">
+  <resultMap id="BaseResultMap" type="com.hnlg.enzyme.entity.po.EnzymeInfoPO">
+    <id column="id" jdbcType="BIGINT" property="id" />
+    <id column="enzyme_id" jdbcType="INTEGER" property="enzymeId" />
+    <result column="enzyme_gi_num" jdbcType="VARCHAR" property="enzymeGiNum" />
+    <result column="enzyme_kda" jdbcType="VARCHAR" property="enzymeKda" />
+    <result column="enzyme_amino_acid_num" jdbcType="VARCHAR" property="enzymeAminoAcidNum" />
+    <result column="enzyme_mutation_before" jdbcType="VARCHAR" property="enzymeMutationBefore" />
+    <result column="enzyme_mutation_after" jdbcType="VARCHAR" property="enzymeMutationAfter" />
+    <result column="enzyme_substrate" jdbcType="VARCHAR" property="enzymeSubstrate" />
+    <result column="enzyme_product" jdbcType="VARCHAR" property="enzymeProduct" />
+    <result column="enzyme_belong" jdbcType="VARCHAR" property="enzymeBelong" />
+    <result column="enzyme_min_ph_scope" jdbcType="VARCHAR" property="enzymeMinPhScope" />
+    <result column="enzyme_max_ph_scope" jdbcType="VARCHAR" property="enzymeMaxPhScope" />
+    <result column="enzyme_perfect_scope" jdbcType="VARCHAR" property="enzymePerfectScope" />
+    <result column="enzyme_min_temperature_scope" jdbcType="VARCHAR" property="enzymeMinTemperatureScope" />
+    <result column="enzyme_max_temperature_scope" jdbcType="VARCHAR" property="enzymeMaxTemperatureScope" />
+    <result column="enzyme_perfect_temperature_scope" jdbcType="VARCHAR" property="enzymePerfectTemperatureScope" />
+    <result column="enzyme_tolerance" jdbcType="VARCHAR" property="enzymeTolerance" />
+    <result column="enzyme_vmax_mmo_evaluation" jdbcType="VARCHAR" property="enzymeVmaxMmoEvaluation" />
+    <result column="enzyme_km_mmol_evaluation" jdbcType="VARCHAR" property="enzymeKmMmolEvaluation" />
+    <result column="enzyme_kcat_evaluation" jdbcType="VARCHAR" property="enzymeKcatEvaluation" />
+    <result column="enzyme_kcat_km_evaluation" jdbcType="VARCHAR" property="enzymeKcatKmEvaluation" />
+    <result column="enzyme_bh_evaluation" jdbcType="VARCHAR" property="enzymeBhEvaluation" />
+    <result column="enzyme_reference" jdbcType="VARCHAR" property="enzymeReference" />
+    <result column="enzyme_reference_url" jdbcType="VARCHAR" property="enzymeReferenceUrl" />
+    <result column="enzyme_sequence" jdbcType="LONGVARCHAR" property="enzymeSequence" />
+  </resultMap>
+  <sql id="field">
+    id, enzyme_id, enzyme_gi_num, enzyme_kda, enzyme_amino_acid_num, enzyme_mutation_before,
+    enzyme_mutation_after, enzyme_substrate, enzyme_product, enzyme_belong, enzyme_min_ph_scope,
+    enzyme_max_ph_scope, enzyme_perfect_scope, enzyme_min_temperature_scope, enzyme_max_temperature_scope,
+    enzyme_perfect_temperature_scope, enzyme_tolerance, enzyme_vmax_mmo_evaluation, enzyme_km_mmol_evaluation,
+    enzyme_kcat_evaluation, enzyme_kcat_km_evaluation, enzyme_bh_evaluation, enzyme_reference,
+    enzyme_reference_url, enzyme_sequence,enzyme_tm,enzyme_half_life,enzyme_temperature_tolerance,enzyme_acid_alkali_tolerance,
+    enzyme_tolerance_classification,enzyme_overall_evaluation
+  </sql>
+  <delete id="deleteByPrimaryKey" parameterType="map">
+    delete from enzyme_info
+    where id = #{id,jdbcType=BIGINT}
+      and enzyme_id = #{enzymeId,jdbcType=INTEGER}
+  </delete>
+    <delete id="deleteByEnzymeBaseId">
+      delete from enzyme_info
+      where enzyme_id = #{enzymeId}
+    </delete>
+    <insert id="insert" keyColumn="id" keyProperty="id" parameterType="com.hnlg.enzyme.entity.po.EnzymeInfoPO" useGeneratedKeys="true">
+    insert into enzyme_info (enzyme_id, enzyme_gi_num, enzyme_kda, 
+      enzyme_amino_acid_num, enzyme_mutation_before, 
+      enzyme_mutation_after, enzyme_substrate, enzyme_product, 
+      enzyme_belong, enzyme_min_ph_scope, enzyme_max_ph_scope, 
+      enzyme_perfect_scope, enzyme_min_temperature_scope, 
+      enzyme_max_temperature_scope, enzyme_perfect_temperature_scope, 
+      enzyme_tolerance, enzyme_vmax_mmo_evaluation, 
+      enzyme_km_mmol_evaluation, enzyme_kcat_evaluation, 
+      enzyme_kcat_km_evaluation, enzyme_bh_evaluation, 
+      enzyme_reference, enzyme_reference_url, enzyme_sequence,
+      enzyme_tm,enzyme_half_life,enzyme_temperature_tolerance,enzyme_acid_alkali_tolerance,
+      enzyme_tolerance_classification,enzyme_overall_evaluation
+      )
+    values (#{enzymeId,jdbcType=INTEGER}, #{enzymeGiNum,jdbcType=VARCHAR}, #{enzymeKda,jdbcType=VARCHAR}, 
+      #{enzymeAminoAcidNum,jdbcType=VARCHAR}, #{enzymeMutationBefore,jdbcType=VARCHAR}, 
+      #{enzymeMutationAfter,jdbcType=VARCHAR}, #{enzymeSubstrate,jdbcType=VARCHAR}, #{enzymeProduct,jdbcType=VARCHAR}, 
+      #{enzymeBelong,jdbcType=VARCHAR}, #{enzymeMinPhScope,jdbcType=DOUBLE}, #{enzymeMaxPhScope,jdbcType=DOUBLE}, 
+      #{enzymePerfectScope,jdbcType=DOUBLE}, #{enzymeMinTemperatureScope,jdbcType=INTEGER}, 
+      #{enzymeMaxTemperatureScope,jdbcType=INTEGER}, #{enzymePerfectTemperatureScope,jdbcType=INTEGER}, 
+      #{enzymeTolerance,jdbcType=VARCHAR}, #{enzymeVmaxMmoEvaluation,jdbcType=VARCHAR}, 
+      #{enzymeKmMmolEvaluation,jdbcType=VARCHAR}, #{enzymeKcatEvaluation,jdbcType=VARCHAR}, 
+      #{enzymeKcatKmEvaluation,jdbcType=VARCHAR}, #{enzymeBhEvaluation,jdbcType=INTEGER}, 
+      #{enzymeReference,jdbcType=VARCHAR}, #{enzymeReferenceUrl,jdbcType=VARCHAR}, #{enzymeSequence,jdbcType=LONGVARCHAR},
+      #{enzymeTm,jdbcType=VARCHAR},#{enzymeHalfLife,jdbcType=VARCHAR},#{enzymeTemperatureTolerance,jdbcType=VARCHAR},
+      #{enzymeAcidAlkaliTolerance,jdbcType=VARCHAR},#{enzymeToleranceClassification,jdbcType=VARCHAR},#{enzymeOverallEvaluation,jdbcType=VARCHAR}
+      )
+  </insert>
+  <update id="updateByPrimaryKey" parameterType="com.hnlg.enzyme.entity.po.EnzymeInfoPO">
+    update enzyme_info
+    set enzyme_gi_num = #{enzymeGiNum,jdbcType=VARCHAR},
+      enzyme_kda = #{enzymeKda,jdbcType=VARCHAR},
+      enzyme_amino_acid_num = #{enzymeAminoAcidNum,jdbcType=VARCHAR},
+      enzyme_mutation_before = #{enzymeMutationBefore,jdbcType=VARCHAR},
+      enzyme_mutation_after = #{enzymeMutationAfter,jdbcType=VARCHAR},
+      enzyme_substrate = #{enzymeSubstrate,jdbcType=VARCHAR},
+      enzyme_product = #{enzymeProduct,jdbcType=VARCHAR},
+      enzyme_belong = #{enzymeBelong,jdbcType=VARCHAR},
+      enzyme_min_ph_scope = #{enzymeMinPhScope,jdbcType=DOUBLE},
+      enzyme_max_ph_scope = #{enzymeMaxPhScope,jdbcType=DOUBLE},
+      enzyme_perfect_scope = #{enzymePerfectScope,jdbcType=DOUBLE},
+      enzyme_min_temperature_scope = #{enzymeMinTemperatureScope,jdbcType=INTEGER},
+      enzyme_max_temperature_scope = #{enzymeMaxTemperatureScope,jdbcType=INTEGER},
+      enzyme_perfect_temperature_scope = #{enzymePerfectTemperatureScope,jdbcType=INTEGER},
+      enzyme_tolerance = #{enzymeTolerance,jdbcType=VARCHAR},
+      enzyme_vmax_mmo_evaluation = #{enzymeVmaxMmoEvaluation,jdbcType=VARCHAR},
+      enzyme_km_mmol_evaluation = #{enzymeKmMmolEvaluation,jdbcType=VARCHAR},
+      enzyme_kcat_evaluation = #{enzymeKcatEvaluation,jdbcType=VARCHAR},
+      enzyme_kcat_km_evaluation = #{enzymeKcatKmEvaluation,jdbcType=VARCHAR},
+      enzyme_bh_evaluation = #{enzymeBhEvaluation,jdbcType=INTEGER},
+      enzyme_reference = #{enzymeReference,jdbcType=VARCHAR},
+      enzyme_reference_url = #{enzymeReferenceUrl,jdbcType=VARCHAR},
+      enzyme_sequence = #{enzymeSequence,jdbcType=LONGVARCHAR},
+      enzyme_tm = #{enzymeTm,jdbcType=VARCHAR},
+      enzyme_half_life = #{enzymeHalfLife,jdbcType=VARCHAR},
+      enzyme_temperature_tolerance = #{enzymeTemperatureTolerance,jdbcType=VARCHAR},
+      enzyme_acid_alkali_tolerance = #{enzymeAcidAlkaliTolerance,jdbcType=VARCHAR},
+      enzyme_tolerance_classification = #{enzymeToleranceClassification,jdbcType=VARCHAR},
+      enzyme_overall_evaluation = #{enzymeOverallEvaluation,jdbcType=VARCHAR}
+    where enzyme_id = #{enzymeId,jdbcType=INTEGER}
+  </update>
+
+    <select id="selectByPrimaryKey" parameterType="map" resultType="com.hnlg.enzyme.entity.dto.EnzymeInfoDTO">
+    select  eb.id,eb.enzyme_name, eb.enzyme_ec_code, eb.enzyme_classification,eb.enzyme_type, eb.enzyme_species,
+      eb.enzyme_mutation_type, eb.enzyme_mutant,ei.id, ei.enzyme_id, ei.enzyme_gi_num, ei.enzyme_kda, ei.enzyme_amino_acid_num, ei.enzyme_mutation_before,
+    ei.enzyme_mutation_after, ei.enzyme_substrate, ei.enzyme_product, ei.enzyme_belong, ei.enzyme_min_ph_scope,
+    ei.enzyme_max_ph_scope, ei.enzyme_perfect_scope, ei.enzyme_min_temperature_scope, ei.enzyme_max_temperature_scope,
+    ei.enzyme_perfect_temperature_scope, ei.enzyme_tolerance, ei.enzyme_vmax_mmo_evaluation, ei.enzyme_km_mmol_evaluation,
+    ei.enzyme_kcat_evaluation, ei.enzyme_kcat_km_evaluation, ei.enzyme_bh_evaluation, ei.enzyme_reference,
+    ei.enzyme_reference_url, ei.enzyme_sequence,ei.enzyme_tm,ei.enzyme_half_life,ei.enzyme_temperature_tolerance,ei.enzyme_acid_alkali_tolerance,
+    ei.enzyme_tolerance_classification,ei.enzyme_overall_evaluation
+    from enzyme_info ei left join enzyme_base eb
+    on eb.id =ei.enzyme_id
+    where ei.enzyme_id = #{enzymeId,jdbcType=INTEGER}
+  </select>
+  <select id="selectAll" resultMap="BaseResultMap">
+    select <include refid="field"/>
+    from enzyme_info
+  </select>
+
+  <select id="selectBySeqce" resultType="com.hnlg.enzyme.entity.po.EnzymeInfoPO">
+    select id
+    from enzyme_info
+    where enzyme_sequence=#{enzymeSequence}
+  </select>
+  <select id="selectByGiNum" resultType="com.hnlg.enzyme.entity.po.EnzymeInfoPO">
+    select id
+    from enzyme_info
+    where enzyme_gi_num=#{enzymeGiNum}
+  </select>
+  <update id="batchUpdate" parameterType="com.hnlg.enzyme.entity.po.EnzymeInfoPO">
+    <foreach collection="list" item="item" index="index" open="" close="" separator=";">
+      update enzyme_info
+      <set>
+        <if test="item.enzymeTemperatureTolerance != null">
+          enzyme_temperature_tolerance = #{item.enzymeTemperatureTolerance,jdbcType=VARCHAR},
+        </if>
+        <if test="item.enzymeAcidAlkaliTolerance != null">
+          enzyme_acid_alkali_tolerance = #{item.enzymeAcidAlkaliTolerance,jdbcType=VARCHAR},
+        </if>
+        <if test="item.enzymeToleranceClassification != null">
+          enzyme_tolerance_classification = #{item.enzymeToleranceClassification,jdbcType=VARCHAR},
+        </if>
+      </set>
+      where enzyme_id = #{item.enzymeId,jdbcType=BIGINT}
+    </foreach>
+  </update>
+</mapper>
